@@ -46,9 +46,7 @@ open class UnderlinedTextField: InnerDesignableView, ResetableField {
     private var lastViewHeight: CGFloat = 0
     private var placeholderString: String? {
         didSet {
-            let attributes: [NSAttributedString.Key : Any] = [.font: configuration.placeholder.font, .foregroundColor: placeholderColor(), NSAttributedString.Key.kern: -4]
-            let attributedString = NSAttributedString(string: placeholderString ?? "", attributes: attributes)
-            placeholder.string = attributedString
+            placeholder.string = NSAttributedString(string: placeholderString ?? "", attributes: placeholderAttributes())
         }
     }
 
@@ -725,6 +723,12 @@ private extension UnderlinedTextField {
     func placeholderColor() -> CGColor {
         let colorsConfiguration = shouldMovePlaceholderOnTop() ? configuration.placeholder.topColors : configuration.placeholder.bottomColors
         return colorsConfiguration.suitableColor(fieldState: state, isActiveError: error).cgColor
+    }
+
+    func placeholderAttributes() -> [NSAttributedString.Key: Any] {
+        return [.font: configuration.placeholder.font,
+                .foregroundColor: placeholderColor(),
+                NSAttributedString.Key.kern: configuration.placeholder.kern]
     }
 
     func currentPlaceholderPosition() -> CGRect {

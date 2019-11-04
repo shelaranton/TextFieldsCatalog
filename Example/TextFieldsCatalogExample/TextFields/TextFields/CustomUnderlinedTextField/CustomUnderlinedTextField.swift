@@ -64,6 +64,7 @@ private extension CustomUnderlinedTextField {
                                                                           disabled: CustomColor.Main.gray.withAlphaComponent(0.5)))
         configuration.placeholder = FloatingPlaceholderConfiguration(font: UIFont.systemFont(ofSize: 16, weight: .regular),
                                                                      height: 24,
+                                                                     kern: 0.0,
                                                                      topInsets: UIEdgeInsets(top: 10, left: 16, bottom: 0, right: 16),
                                                                      bottomInsets: UIEdgeInsets(top: 21, left: 15, bottom: 0, right: 16),
                                                                      smallFontSize: 14,

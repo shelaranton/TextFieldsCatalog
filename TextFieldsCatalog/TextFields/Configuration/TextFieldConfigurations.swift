@@ -70,6 +70,7 @@ public final class UnderlinedTextFieldConfiguration {
                                                             disabled: Color.Main.container))
         placeholder = FloatingPlaceholderConfiguration(font: UIFont.systemFont(ofSize: 16, weight: .regular),
                                                        height: 19,
+                                                       kern: -2,
                                                        topInsets: UIEdgeInsets(top: 2, left: 16, bottom: 0, right: 16),
                                                        bottomInsets: UIEdgeInsets(top: 23, left: 15, bottom: 0, right: 16),
                                                        smallFontSize: 12,
@@ -124,6 +125,7 @@ public final class UnderlinedTextViewConfiguration {
                                                             disabled: Color.Main.container))
         placeholder = FloatingPlaceholderConfiguration(font: UIFont.systemFont(ofSize: 16, weight: .regular),
                                                        height: 19,
+                                                       kern: -2,
                                                        topInsets: UIEdgeInsets(top: 2, left: 16, bottom: 0, right: 16),
                                                        bottomInsets: UIEdgeInsets(top: 23, left: 15, bottom: 0, right: 16),
                                                        smallFontSize: 12,

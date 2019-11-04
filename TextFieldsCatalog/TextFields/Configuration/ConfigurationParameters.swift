@@ -44,6 +44,8 @@ public final class FloatingPlaceholderConfiguration {
     let font: UIFont
     /// Height of floating placeholder
     let height: CGFloat
+    /// Space between characters
+    let kern: CGFloat
     /// This is insets for placeholder in top position. Bottom value is ignored, position is relative to the top.
     let topInsets: UIEdgeInsets
     /// This is insets for placeholder in bottom position. Bottom value is ignored, position is relative to the top.
@@ -59,6 +61,7 @@ public final class FloatingPlaceholderConfiguration {
 
     public init(font: UIFont,
                 height: CGFloat,
+                kern: CGFloat,
                 topInsets: UIEdgeInsets,
                 bottomInsets: UIEdgeInsets,
                 smallFontSize: CGFloat,
@@ -67,6 +70,7 @@ public final class FloatingPlaceholderConfiguration {
                 bottomColors: ColorConfiguration) {
         self.font = font
         self.height = height
+        self.kern = kern
         self.topInsets = topInsets
         self.bottomInsets = bottomInsets
         self.smallFontSize = smallFontSize
