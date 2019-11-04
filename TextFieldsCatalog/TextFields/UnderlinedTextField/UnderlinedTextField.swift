@@ -44,6 +44,13 @@ open class UnderlinedTextField: InnerDesignableView, ResetableField {
     private var previousInput: UIResponder?
     private var heightConstraint: NSLayoutConstraint?
     private var lastViewHeight: CGFloat = 0
+    private var placeholderString: String? {
+        didSet {
+            let attributes: [NSAttributedString.Key : Any] = [.font: configuration.placeholder.font, .foregroundColor: placeholderColor(), NSAttributedString.Key.kern: -4]
+            let attributedString = NSAttributedString(string: placeholderString ?? "", attributes: attributes)
+            placeholder.string = attributedString
+        }
+    }
 
     // MARK: - Properties
 
@@ -122,7 +129,8 @@ open class UnderlinedTextField: InnerDesignableView, ResetableField {
 
     /// Allows you to install a placeholder, infoString in bottom label and maximum allowed string
     public func configure(placeholder: String?, maxLength: Int?) {
-        self.placeholder.string = placeholder
+        self.placeholderString = placeholder
+//        self.placeholder.string = placeholder
         self.maxLength = maxLength
     }
 
