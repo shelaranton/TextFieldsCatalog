@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		50B6430D7DAE7D25EA168780 /* Pods_TextFieldsCatalog.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE597D7226F11C5666C0ACD9 /* Pods_TextFieldsCatalog.framework */; };
+		900C20352476C78600747087 /* NativeField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900C20342476C78600747087 /* NativeField.swift */; };
 		902CE2E821FF6D6D00AC21D4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 902CE2EA21FF6D6D00AC21D4 /* Localizable.strings */; };
 		902CE2ED21FF6D9C00AC21D4 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 902CE2EC21FF6D9C00AC21D4 /* Strings.swift */; };
 		902CE2EF21FF702F00AC21D4 /* SharedRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 902CE2EE21FF702F00AC21D4 /* SharedRegex.swift */; };
@@ -102,6 +103,7 @@
 		2544D9C7000E4E9EEFE58E84 /* Pods-TextFieldsCatalog.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextFieldsCatalog.release.xcconfig"; path = "Pods/Target Support Files/Pods-TextFieldsCatalog/Pods-TextFieldsCatalog.release.xcconfig"; sourceTree = "<group>"; };
 		2E9721A780F7BB9DF0720B41 /* Pods-TextFieldsCatalogTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextFieldsCatalogTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TextFieldsCatalogTests/Pods-TextFieldsCatalogTests.release.xcconfig"; sourceTree = "<group>"; };
 		495724198506E09563838E8F /* Pods-TextFieldsCatalog-TextFieldsCatalogTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TextFieldsCatalog-TextFieldsCatalogTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TextFieldsCatalog-TextFieldsCatalogTests/Pods-TextFieldsCatalog-TextFieldsCatalogTests.release.xcconfig"; sourceTree = "<group>"; };
+		900C20342476C78600747087 /* NativeField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NativeField.swift; sourceTree = "<group>"; };
 		902CE2E921FF6D6D00AC21D4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		902CE2EB21FF6D7D00AC21D4 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		902CE2EC21FF6D9C00AC21D4 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 				90A32B80228984540036C634 /* GuidedTextField.swift */,
 				90A32B7E2289792D0036C634 /* PickerTextField.swift */,
 				9038640B21FF5A0100BAA761 /* ResetableField.swift */,
+				900C20342476C78600747087 /* NativeField.swift */,
 			);
 			path = TextField;
 			sourceTree = "<group>";
@@ -853,6 +856,7 @@
 				9040B90523C6371000998989 /* TextFieldPasswordModeBehavior.swift in Sources */,
 				909DB887220355F000F0C5B7 /* String.swift in Sources */,
 				909CE8E8235350FF001E3B7F /* ValidationPolicy.swift in Sources */,
+				900C20352476C78600747087 /* NativeField.swift in Sources */,
 				90A5D38D228E9AEF000322A2 /* AccessibilityIdentifiers.swift in Sources */,
 				902CE2F121FF707E00AC21D4 /* FormatterMasks.swift in Sources */,
 				90C6AC7223C6201000D13B8D /* HintService.swift in Sources */,

@@ -30,6 +30,11 @@ extension ExamplesViewController: ExamplesViewInput {
     func setupInitialState(with title: String) {
         view.backgroundColor = Color.Main.background
         navigationItem.title = title
+
+        let field = UITextField()
+        print("text == \(field.text)")
+        field.text = nil
+        print("text == \(field.text)")
     }
 
 }
