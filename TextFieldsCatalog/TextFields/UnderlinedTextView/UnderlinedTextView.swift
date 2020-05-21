@@ -50,9 +50,9 @@ open class UnderlinedTextView: InnerDesignableView, ResetableField {
     // MARK: - Services
 
     private var fieldService: FieldService?
-    private var placeholderService: FloatingPlaceholderService?
     private var hintService: HintService?
     private var lineService: LineService?
+    private var placeholderServices: [AbstractPlaceholderService] = [FloatingPlaceholderService(configuration: .defaultForTextView)]
 
     // MARK: - Properties
 
@@ -70,7 +70,6 @@ open class UnderlinedTextView: InnerDesignableView, ResetableField {
     public var validationPolicy: ValidationPolicy = .always
     public var flexibleHeightPolicy = FlexibleHeightPolicy(minHeight: 77,
                                                            bottomOffset: 5)
-    public var isNativePlaceholder = false
 
     public var onBeginEditing: ((UnderlinedTextView) -> Void)?
     public var onEndEditing: ((UnderlinedTextView) -> Void)?
@@ -78,6 +77,14 @@ open class UnderlinedTextView: InnerDesignableView, ResetableField {
     public var onShouldReturn: ((UnderlinedTextView) -> Void)?
     public var onValidateFail: ((UnderlinedTextView) -> Void)?
     public var onHeightChanged: ((CGFloat) -> Void)?
+    public var toolbarView: UIView? {
+        get {
+            return textView.inputAccessoryView
+        }
+        set {
+            textView.inputAccessoryView = newValue
+        }
+    }
 
     // MARK: - Initialization
 
@@ -85,7 +92,6 @@ open class UnderlinedTextView: InnerDesignableView, ResetableField {
         super.init(frame: frame)
         configureServices()
         configureAppearance()
-        updateUI()
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -98,7 +104,6 @@ open class UnderlinedTextView: InnerDesignableView, ResetableField {
         super.awakeFromNib()
         configureServices()
         configureAppearance()
-        updateUI()
     }
 
     override open  func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -106,11 +111,41 @@ open class UnderlinedTextView: InnerDesignableView, ResetableField {
         updateUI()
     }
 
+    override open func draw(_ rect: CGRect) {
+        super.draw(rect)
+        updateUI()
+    }
+
     // MARK: - Public Methods
 
-    /// Allows you to install a placeholder, infoString in bottom label and maximum allowed string length
-    public func configure(placeholder: String?, maxLength: Int?) {
-        placeholderService?.setup(placeholder: placeholder)
+    /// Allows you to change placeholder services for text view
+    public func setup(placeholderServices: [AbstractPlaceholderService]) {
+        self.placeholderServices = placeholderServices
+        for service in placeholderServices {
+            service.provide(superview: self.view, field: textView)
+            service.configurePlaceholder(fieldState: state,
+                                         containerState: containerState)
+            service.updateContent(fieldState: state, containerState: containerState)
+        }
+    }
+
+    /// Allows you to add new placeholder service
+    public func add(placeholderService service: AbstractPlaceholderService) {
+        service.provide(superview: self.view, field: textView)
+        service.configurePlaceholder(fieldState: state,
+                                     containerState: containerState)
+        service.updateContent(fieldState: state, containerState: containerState)
+        placeholderServices.append(service)
+    }
+
+    /// Allows you to install placeholder in first placeholder service.
+    /// If you will use more than one service - install placeholder to it manually.
+    public func configure(placeholder: String?) {
+        self.placeholderServices.first?.setup(placeholder: placeholder)
+    }
+
+    /// Allows you to install maximum allowed length of input string
+    public func configure(maxLength: Int?) {
         self.maxLength = maxLength
     }
 
@@ -185,7 +220,6 @@ open class UnderlinedTextView: InnerDesignableView, ResetableField {
         error = false
         updateUI()
         updateClearButtonVisibility()
-        placeholderService?.updatePlaceholderVisibility(isNativePlaceholder: isNativePlaceholder)
     }
 
     /// Reset only error state and update all UI elements
@@ -246,31 +280,31 @@ private extension UnderlinedTextView {
         fieldService = FieldService(field: textView,
                                     configuration: configuration.textField,
                                     backgroundConfiguration: configuration.background)
-        placeholderService = FloatingPlaceholderService(superview: self,
-                                                        field: textView,
-                                                        configuration: configuration.placeholder)
         hintService = HintService(hintLabel: hintLabel,
                                   configuration: configuration.hint,
-                                  heightLayoutPolicy: .flexible(0, 0))
+                                  heightLayoutPolicy: .elastic(minHeight: 0, bottomSpace: 0, ignoreEmptyHint: false))
         lineService = LineService(superview: self,
                                   field: textView,
-                                  flexibleTopSpace: true,
                                   configuration: configuration.line)
     }
 
     func configureAppearance() {
         fieldService?.setup(configuration: configuration.textField,
                             backgroundConfiguration: configuration.background)
-        placeholderService?.setup(configuration: configuration.placeholder)
         hintService?.setup(configuration: configuration.hint)
         lineService?.setup(configuration: configuration.line)
+        for service in placeholderServices {
+            service.provide(superview: self.view, field: textView)
+        }
 
         fieldService?.configureBackground()
         fieldService?.configure(textView: textView)
-        placeholderService?.configurePlaceholder(fieldState: state,
-                                                 containerState: containerState)
         hintService?.configureHintLabel()
         lineService?.configureLineView(fieldState: state)
+        for service in placeholderServices {
+            service.configurePlaceholder(fieldState: state,
+                                         containerState: containerState)
+        }
 
         configureClearButton()
         textView.delegate = self
@@ -324,9 +358,11 @@ extension UnderlinedTextView: UITextViewDelegate {
 
     public func textViewDidChange(_ textView: UITextView) {
         updateClearButtonVisibility()
-        placeholderService?.updatePlaceholderVisibility(isNativePlaceholder: isNativePlaceholder)
         removeError()
         performOnTextChangedCall()
+        for service in placeholderServices {
+            service.updateAfterTextChanged(fieldState: state)
+        }
     }
 
 }
@@ -338,12 +374,11 @@ private extension UnderlinedTextView {
     func updateUI(animated: Bool = false) {
         fieldService?.updateContent(containerState: containerState)
         hintService?.updateContent(containerState: containerState)
-        placeholderService?.updateContent(fieldState: state,
-                                          containerState: containerState,
-                                          isNativePlaceholder: isNativePlaceholder)
+        for service in placeholderServices {
+            service.updateContent(fieldState: state, containerState: containerState)
+        }
 
         updateViewHeight()
-
         lineService?.updateContent(fieldState: state,
                                    containerState: containerState,
                                    strategy: .frame)
