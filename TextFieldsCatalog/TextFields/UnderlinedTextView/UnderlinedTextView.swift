@@ -78,6 +78,7 @@ open class UnderlinedTextView: InnerDesignableView, ResetableField {
     public var onShouldReturn: ((UnderlinedTextView) -> Void)?
     public var onValidateFail: ((UnderlinedTextView) -> Void)?
     public var onHeightChanged: ((CGFloat) -> Void)?
+    public var shouldChangeTextInRange: ((UnderlinedTextView, NSRange, String) -> Bool)?
 
     // MARK: - Initialization
 
@@ -318,10 +319,10 @@ extension UnderlinedTextView: UITextViewDelegate {
             let textRange = Range(range, in: currentText),
             let maxLength = self.maxLength
         else {
-            return true
+            return true && (shouldChangeTextInRange?(self, range, text) ?? true)
         }
         let newText = currentText.replacingCharacters(in: textRange, with: text)
-        return newText.count <= maxLength
+        return ((newText.count <= maxLength) && (shouldChangeTextInRange?(self, range, text) ?? true))
     }
 
     public func textViewDidChange(_ textView: UITextView) {
